@@ -4,7 +4,7 @@ Hosted MCP and REST API for discovering tours, tickets, attractions, and activit
 
 TicketLens provides a public MCP server at `https://mcp.ticketlens.com/` and a versioned REST API at `https://api.ticketlens.com/v1` for in-destination experiences, including guided tours, attraction tickets, hop-on hop-off buses, sports tickets, and other event tickets.
 
-Main website: [www.ticketlens.com](https://www.ticketlens.com/)
+Main website: [www.ticketlens.com/en](https://www.ticketlens.com/en)
 
 ## What TicketLens is
 
