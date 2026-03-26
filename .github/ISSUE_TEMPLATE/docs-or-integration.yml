@@ -1,0 +1,44 @@
+name: Docs or integration issue
+description: Report a broken example, stale documentation page, or onboarding problem.
+title: "[docs] "
+labels:
+  - documentation
+body:
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Surface
+      options:
+        - README
+        - MCP quickstart
+        - API quickstart
+        - OpenAPI artifact
+        - Examples
+        - Issue templates
+    validations:
+      required: true
+  - type: input
+    id: client
+    attributes:
+      label: Client or tool
+      description: Which client or example were you using?
+      placeholder: Codex, Cursor, Claude, curl, JavaScript, Python
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: Describe the problem or stale guidance.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction steps
+      description: Paste the steps, command, or config snippet that triggered the issue.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+      description: What did you expect to happen?

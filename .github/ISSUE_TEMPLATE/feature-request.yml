@@ -1,0 +1,36 @@
+name: Feature request
+description: Suggest a public docs, example, or contract improvement for the TicketLens experiences MCP/API.
+title: "[feature] "
+labels:
+  - enhancement
+body:
+  - type: textarea
+    id: use_case
+    attributes:
+      label: Use case
+      description: What are you trying to build?
+    validations:
+      required: true
+  - type: textarea
+    id: gap
+    attributes:
+      label: Current gap
+      description: What is missing or unclear in the current public repo?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: What would make the integration easier?
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Requested surface
+      options:
+        - README
+        - MCP example
+        - API example
+        - OpenAPI artifact
+        - New endpoint or tool
+        - Other

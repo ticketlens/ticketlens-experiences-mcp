@@ -1,0 +1,2468 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "TicketLens Tour Search API",
+    "description": "MCP server for TicketLens destination experiences search and POI resolution",
+    "version": "0.1.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.ticketlens.com",
+      "description": "Public TicketLens experiences API"
+    }
+  ],
+  "paths": {
+    "/v1/search/tours": {
+      "post": {
+        "tags": [
+          "Tours"
+        ],
+        "summary": "Search experiences",
+        "description": "Search TicketLens destination experiences via the legacy /v1/search/tours contract. Results may include guided tours, attraction tickets, hop-on hop-off buses, sports tickets, event tickets, and other activities.",
+        "operationId": "search_tours_v1_search_tours_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchToursAPIRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Experience search response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchToursAPIResponse"
+                },
+                "example": {
+                  "request_id": "7f3a1ad0-2f0b-4a98-8f3d-5f3f5ea0d8a1",
+                  "items": [
+                    {
+                      "id": "258736",
+                      "title": "Eiffel Tower Guided Tour by Elevator: Reserved Entry",
+                      "group_id": 9901,
+                      "provider_id": 44,
+                      "price": {
+                        "eur": 29.0,
+                        "usd": 32.1,
+                        "gbp": 24.7,
+                        "chf": 31.0
+                      },
+                      "city": "Paris",
+                      "country": "France",
+                      "breadcrumb_destination": 5,
+                      "breadcrumb_poi": 660851,
+                      "rating": 4.7,
+                      "ratings_count": 1845,
+                      "first_available": "2026-03-16",
+                      "second_available": "2026-03-17",
+                      "availability_window": {
+                        "from": "2026-03-16",
+                        "to": "2026-03-16"
+                      },
+                      "url": "https://example.com/tour/258736",
+                      "image_id": 12233
+                    }
+                  ],
+                  "pagination": {
+                    "page": 0,
+                    "per_page": 20,
+                    "total_items": 1,
+                    "total_pages": 1,
+                    "has_more": false
+                  },
+                  "warnings": [],
+                  "facets": {
+                    "city": [
+                      {
+                        "value": "Paris",
+                        "count": 1
+                      }
+                    ],
+                    "country": [
+                      {
+                        "value": "France",
+                        "count": 1
+                      }
+                    ],
+                    "category": [],
+                    "duration_bucket": [],
+                    "provider": [
+                      {
+                        "value": "Some Provider",
+                        "count": 1
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                },
+                "example": {
+                  "type": "https://api.ticketlens.com/problems/invalid-argument",
+                  "title": "Invalid Request",
+                  "status": 400,
+                  "detail": "Invalid search_tours request payload",
+                  "request_id": "7f3a1ad0-2f0b-4a98-8f3d-5f3f5ea0d8a1",
+                  "code": "INVALID_ARGUMENT",
+                  "errors": [
+                    {
+                      "type": "value_error",
+                      "loc": [
+                        "body"
+                      ],
+                      "msg": "at least one of query, poi, city, destination, or destination.destination_id is required"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                },
+                "example": {
+                  "type": "https://api.ticketlens.com/problems/unauthorized",
+                  "title": "Unauthorized",
+                  "status": 401,
+                  "detail": "Request is unauthorized",
+                  "request_id": "...",
+                  "code": "UNAUTHORIZED"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Semantic request validation failed",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                },
+                "example": {
+                  "type": "https://api.ticketlens.com/problems/invalid-filter",
+                  "title": "Unprocessable Request",
+                  "status": 422,
+                  "detail": "Destination context is ambiguous; narrow the city or country filter",
+                  "request_id": "7f3a1ad0-2f0b-4a98-8f3d-5f3f5ea0d8a1",
+                  "code": "INVALID_FILTER",
+                  "meta": {
+                    "matches": [
+                      "5",
+                      "7"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                },
+                "example": {
+                  "type": "https://api.ticketlens.com/problems/rate-limit-exceeded",
+                  "title": "Rate Limit Exceeded",
+                  "status": 429,
+                  "detail": "Daily per-IP request limit exceeded",
+                  "request_id": "7f3a1ad0-2f0b-4a98-8f3d-5f3f5ea0d8a1",
+                  "code": "RATE_LIMIT_EXCEEDED",
+                  "meta": {
+                    "service": "api",
+                    "scope": "ip",
+                    "period": "day",
+                    "limit": 100,
+                    "reset_at": "2026-03-26T00:00:00Z",
+                    "retry_after_seconds": 3600
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected server failure",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                },
+                "example": {
+                  "type": "https://api.ticketlens.com/problems/internal",
+                  "title": "Internal Server Error",
+                  "status": 500,
+                  "detail": "Unexpected internal failure",
+                  "request_id": "...",
+                  "code": "INTERNAL"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Search backend returned an error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                },
+                "example": {
+                  "type": "https://api.ticketlens.com/problems/search-service-error",
+                  "title": "Upstream Service Error",
+                  "status": 502,
+                  "detail": "Search service request failed",
+                  "request_id": "7f3a1ad0-2f0b-4a98-8f3d-5f3f5ea0d8a1",
+                  "code": "SEARCH_SERVICE_ERROR",
+                  "meta": {
+                    "http_status": 400
+                  }
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Search backend timed out",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                },
+                "example": {
+                  "type": "https://api.ticketlens.com/problems/search-timeout",
+                  "title": "Upstream Timeout",
+                  "status": 504,
+                  "detail": "Search service timed out",
+                  "request_id": "...",
+                  "code": "SEARCH_TIMEOUT"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "User action is required to resolve the request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                },
+                "example": {
+                  "type": "https://api.ticketlens.com/problems/poi-resolution-required",
+                  "title": "Conflict",
+                  "status": 409,
+                  "detail": "POI resolution requires user confirmation",
+                  "request_id": "...",
+                  "code": "POI_RESOLUTION_REQUIRED"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tours/{tour_id}": {
+      "get": {
+        "tags": [
+          "Tours"
+        ],
+        "summary": "Get an experience",
+        "description": "Fetch the canonical TicketLens record for an experience returned by search_tours. The public contract keeps legacy /v1/tours/{tour_id} naming even when the record is a ticketed attraction or event product.",
+        "operationId": "get_tour_v1_tours__tour_id__get",
+        "parameters": [
+          {
+            "name": "tour_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Tour Id"
+            }
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "en",
+                "de",
+                "it"
+              ],
+              "type": "string",
+              "default": "en",
+              "title": "Language"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Experience detail response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTourAPIResponse"
+                },
+                "example": {
+                  "request_id": "7f3a1ad0-2f0b-4a98-8f3d-5f3f5ea0d8a1",
+                  "id": "258736",
+                  "title": "Eiffel Tower Guided Tour by Elevator",
+                  "group_id": 9901,
+                  "provider_id": 44,
+                  "price": {
+                    "eur": 29.0,
+                    "usd": 32.1,
+                    "gbp": 24.7,
+                    "chf": 31.0
+                  },
+                  "city": "Paris",
+                  "country": "France",
+                  "breadcrumb_destination": 5,
+                  "breadcrumb_poi": 660851,
+                  "rating": 4.7,
+                  "ratings_count": 1845,
+                  "first_available": "2026-03-16",
+                  "second_available": "2026-03-17",
+                  "availability_window": {
+                    "from": "2026-03-16",
+                    "to": "2026-03-16"
+                  },
+                  "url": "https://example.com/tour/258736",
+                  "image_id": 12233,
+                  "details": {
+                    "title_en": "Eiffel Tower Guided Tour by Elevator"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                },
+                "example": {
+                  "type": "https://api.ticketlens.com/problems/invalid-argument",
+                  "title": "Invalid Request",
+                  "status": 400,
+                  "detail": "Invalid search_tours request payload",
+                  "request_id": "7f3a1ad0-2f0b-4a98-8f3d-5f3f5ea0d8a1",
+                  "code": "INVALID_ARGUMENT",
+                  "errors": [
+                    {
+                      "type": "value_error",
+                      "loc": [
+                        "body"
+                      ],
+                      "msg": "at least one of query, poi, city, destination, or destination.destination_id is required"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                },
+                "example": {
+                  "type": "https://api.ticketlens.com/problems/unauthorized",
+                  "title": "Unauthorized",
+                  "status": 401,
+                  "detail": "Request is unauthorized",
+                  "request_id": "...",
+                  "code": "UNAUTHORIZED"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Semantic request validation failed",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                },
+                "example": {
+                  "type": "https://api.ticketlens.com/problems/invalid-filter",
+                  "title": "Unprocessable Request",
+                  "status": 422,
+                  "detail": "Destination context is ambiguous; narrow the city or country filter",
+                  "request_id": "7f3a1ad0-2f0b-4a98-8f3d-5f3f5ea0d8a1",
+                  "code": "INVALID_FILTER",
+                  "meta": {
+                    "matches": [
+                      "5",
+                      "7"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                },
+                "example": {
+                  "type": "https://api.ticketlens.com/problems/rate-limit-exceeded",
+                  "title": "Rate Limit Exceeded",
+                  "status": 429,
+                  "detail": "Daily per-IP request limit exceeded",
+                  "request_id": "7f3a1ad0-2f0b-4a98-8f3d-5f3f5ea0d8a1",
+                  "code": "RATE_LIMIT_EXCEEDED",
+                  "meta": {
+                    "service": "api",
+                    "scope": "ip",
+                    "period": "day",
+                    "limit": 100,
+                    "reset_at": "2026-03-26T00:00:00Z",
+                    "retry_after_seconds": 3600
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected server failure",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                },
+                "example": {
+                  "type": "https://api.ticketlens.com/problems/internal",
+                  "title": "Internal Server Error",
+                  "status": 500,
+                  "detail": "Unexpected internal failure",
+                  "request_id": "...",
+                  "code": "INTERNAL"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Search backend returned an error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                },
+                "example": {
+                  "type": "https://api.ticketlens.com/problems/search-service-error",
+                  "title": "Upstream Service Error",
+                  "status": 502,
+                  "detail": "Search service request failed",
+                  "request_id": "7f3a1ad0-2f0b-4a98-8f3d-5f3f5ea0d8a1",
+                  "code": "SEARCH_SERVICE_ERROR",
+                  "meta": {
+                    "http_status": 400
+                  }
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Search backend timed out",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                },
+                "example": {
+                  "type": "https://api.ticketlens.com/problems/search-timeout",
+                  "title": "Upstream Timeout",
+                  "status": 504,
+                  "detail": "Search service timed out",
+                  "request_id": "...",
+                  "code": "SEARCH_TIMEOUT"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource was not found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                },
+                "example": {
+                  "type": "https://api.ticketlens.com/problems/invalid-argument",
+                  "title": "Not Found",
+                  "status": 404,
+                  "detail": "tour_id was not found",
+                  "request_id": "7f3a1ad0-2f0b-4a98-8f3d-5f3f5ea0d8a1",
+                  "code": "INVALID_ARGUMENT",
+                  "meta": {
+                    "tour_id": "258736"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/search/pois": {
+      "post": {
+        "tags": [
+          "POIs"
+        ],
+        "summary": "Search POIs",
+        "description": "Resolve points of interest before calling the legacy /v1/search/tours experience search endpoint.",
+        "operationId": "search_pois_v1_search_pois_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchPOIAPIRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "POI search response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchPOIAPIResponse"
+                },
+                "example": {
+                  "request_id": "2a5b2f10-66e3-4d5d-a8be-b0e7d8f2e2c3",
+                  "items": [
+                    {
+                      "id": "660851",
+                      "name": "Eiffel Tower",
+                      "aliases": [
+                        "Tour Eiffel",
+                        "Tour Eiffel Tower"
+                      ],
+                      "city": "Paris",
+                      "country": "France",
+                      "destination_id": "5",
+                      "distance_km": 0.22,
+                      "score": 0.99,
+                      "confidence": "high"
+                    }
+                  ],
+                  "exact_match": true,
+                  "suggestions": [
+                    "Eiffel Tower",
+                    "Tour Eiffel",
+                    "Tour Eiffel Tower"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                },
+                "example": {
+                  "type": "https://api.ticketlens.com/problems/invalid-argument",
+                  "title": "Invalid Request",
+                  "status": 400,
+                  "detail": "Invalid search_tours request payload",
+                  "request_id": "7f3a1ad0-2f0b-4a98-8f3d-5f3f5ea0d8a1",
+                  "code": "INVALID_ARGUMENT",
+                  "errors": [
+                    {
+                      "type": "value_error",
+                      "loc": [
+                        "body"
+                      ],
+                      "msg": "at least one of query, poi, city, destination, or destination.destination_id is required"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                },
+                "example": {
+                  "type": "https://api.ticketlens.com/problems/unauthorized",
+                  "title": "Unauthorized",
+                  "status": 401,
+                  "detail": "Request is unauthorized",
+                  "request_id": "...",
+                  "code": "UNAUTHORIZED"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Semantic request validation failed",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                },
+                "example": {
+                  "type": "https://api.ticketlens.com/problems/invalid-filter",
+                  "title": "Unprocessable Request",
+                  "status": 422,
+                  "detail": "Destination context is ambiguous; narrow the city or country filter",
+                  "request_id": "7f3a1ad0-2f0b-4a98-8f3d-5f3f5ea0d8a1",
+                  "code": "INVALID_FILTER",
+                  "meta": {
+                    "matches": [
+                      "5",
+                      "7"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                },
+                "example": {
+                  "type": "https://api.ticketlens.com/problems/rate-limit-exceeded",
+                  "title": "Rate Limit Exceeded",
+                  "status": 429,
+                  "detail": "Daily per-IP request limit exceeded",
+                  "request_id": "7f3a1ad0-2f0b-4a98-8f3d-5f3f5ea0d8a1",
+                  "code": "RATE_LIMIT_EXCEEDED",
+                  "meta": {
+                    "service": "api",
+                    "scope": "ip",
+                    "period": "day",
+                    "limit": 100,
+                    "reset_at": "2026-03-26T00:00:00Z",
+                    "retry_after_seconds": 3600
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected server failure",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                },
+                "example": {
+                  "type": "https://api.ticketlens.com/problems/internal",
+                  "title": "Internal Server Error",
+                  "status": 500,
+                  "detail": "Unexpected internal failure",
+                  "request_id": "...",
+                  "code": "INTERNAL"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Search backend returned an error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                },
+                "example": {
+                  "type": "https://api.ticketlens.com/problems/search-service-error",
+                  "title": "Upstream Service Error",
+                  "status": 502,
+                  "detail": "Search service request failed",
+                  "request_id": "7f3a1ad0-2f0b-4a98-8f3d-5f3f5ea0d8a1",
+                  "code": "SEARCH_SERVICE_ERROR",
+                  "meta": {
+                    "http_status": 400
+                  }
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Search backend timed out",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                },
+                "example": {
+                  "type": "https://api.ticketlens.com/problems/search-timeout",
+                  "title": "Upstream Timeout",
+                  "status": 504,
+                  "detail": "Search service timed out",
+                  "request_id": "...",
+                  "code": "SEARCH_TIMEOUT"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/pois/{poi_id}": {
+      "get": {
+        "tags": [
+          "POIs"
+        ],
+        "summary": "Get a POI",
+        "description": "Fetch a point of interest by its canonical TicketLens POI ID.",
+        "operationId": "get_poi_v1_pois__poi_id__get",
+        "parameters": [
+          {
+            "name": "poi_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Poi Id"
+            }
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "en",
+                "de",
+                "it"
+              ],
+              "type": "string",
+              "default": "en",
+              "title": "Language"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "POI detail response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPOIAPIResponse"
+                },
+                "example": {
+                  "request_id": "9f5db4f7-c7de-4f2a-9e4b-0f2f7a8f0d12",
+                  "id": "660851",
+                  "name": "Eiffel Tower",
+                  "aliases": [
+                    "Tour Eiffel",
+                    "Tour Eiffel Tower"
+                  ],
+                  "city": "Paris",
+                  "country": "France",
+                  "destination_id": "5",
+                  "score": 0.99,
+                  "confidence": "high"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                },
+                "example": {
+                  "type": "https://api.ticketlens.com/problems/invalid-argument",
+                  "title": "Invalid Request",
+                  "status": 400,
+                  "detail": "Invalid search_tours request payload",
+                  "request_id": "7f3a1ad0-2f0b-4a98-8f3d-5f3f5ea0d8a1",
+                  "code": "INVALID_ARGUMENT",
+                  "errors": [
+                    {
+                      "type": "value_error",
+                      "loc": [
+                        "body"
+                      ],
+                      "msg": "at least one of query, poi, city, destination, or destination.destination_id is required"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                },
+                "example": {
+                  "type": "https://api.ticketlens.com/problems/unauthorized",
+                  "title": "Unauthorized",
+                  "status": 401,
+                  "detail": "Request is unauthorized",
+                  "request_id": "...",
+                  "code": "UNAUTHORIZED"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Semantic request validation failed",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                },
+                "example": {
+                  "type": "https://api.ticketlens.com/problems/invalid-filter",
+                  "title": "Unprocessable Request",
+                  "status": 422,
+                  "detail": "Destination context is ambiguous; narrow the city or country filter",
+                  "request_id": "7f3a1ad0-2f0b-4a98-8f3d-5f3f5ea0d8a1",
+                  "code": "INVALID_FILTER",
+                  "meta": {
+                    "matches": [
+                      "5",
+                      "7"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                },
+                "example": {
+                  "type": "https://api.ticketlens.com/problems/rate-limit-exceeded",
+                  "title": "Rate Limit Exceeded",
+                  "status": 429,
+                  "detail": "Daily per-IP request limit exceeded",
+                  "request_id": "7f3a1ad0-2f0b-4a98-8f3d-5f3f5ea0d8a1",
+                  "code": "RATE_LIMIT_EXCEEDED",
+                  "meta": {
+                    "service": "api",
+                    "scope": "ip",
+                    "period": "day",
+                    "limit": 100,
+                    "reset_at": "2026-03-26T00:00:00Z",
+                    "retry_after_seconds": 3600
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected server failure",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                },
+                "example": {
+                  "type": "https://api.ticketlens.com/problems/internal",
+                  "title": "Internal Server Error",
+                  "status": 500,
+                  "detail": "Unexpected internal failure",
+                  "request_id": "...",
+                  "code": "INTERNAL"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Search backend returned an error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                },
+                "example": {
+                  "type": "https://api.ticketlens.com/problems/search-service-error",
+                  "title": "Upstream Service Error",
+                  "status": 502,
+                  "detail": "Search service request failed",
+                  "request_id": "7f3a1ad0-2f0b-4a98-8f3d-5f3f5ea0d8a1",
+                  "code": "SEARCH_SERVICE_ERROR",
+                  "meta": {
+                    "http_status": 400
+                  }
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Search backend timed out",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                },
+                "example": {
+                  "type": "https://api.ticketlens.com/problems/search-timeout",
+                  "title": "Upstream Timeout",
+                  "status": 504,
+                  "detail": "Search service timed out",
+                  "request_id": "...",
+                  "code": "SEARCH_TIMEOUT"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource was not found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                },
+                "example": {
+                  "type": "https://api.ticketlens.com/problems/invalid-argument",
+                  "title": "Not Found",
+                  "status": 404,
+                  "detail": "tour_id was not found",
+                  "request_id": "7f3a1ad0-2f0b-4a98-8f3d-5f3f5ea0d8a1",
+                  "code": "INVALID_ARGUMENT",
+                  "meta": {
+                    "tour_id": "258736"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/livez": {
+      "get": {
+        "tags": [
+          "Health"
+        ],
+        "summary": "Liveness check",
+        "description": "Return success when the API process is running.",
+        "operationId": "livez_v1_livez_get",
+        "responses": {
+          "200": {
+            "description": "Process liveness response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusAPIResponse"
+                },
+                "example": {
+                  "request_id": "6d4a6b0d-4b4e-42d8-8c0d-5f9bc1ea7f2a",
+                  "status": "ok",
+                  "timestamp": "2026-03-15T10:00:00Z"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/readyz": {
+      "get": {
+        "tags": [
+          "Health"
+        ],
+        "summary": "Readiness check",
+        "description": "Return success when configuration is present and Algolia is reachable.",
+        "operationId": "readyz_v1_readyz_get",
+        "responses": {
+          "200": {
+            "description": "Readiness response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusAPIResponse"
+                },
+                "example": {
+                  "request_id": "6d4a6b0d-4b4e-42d8-8c0d-5f9bc1ea7f2a",
+                  "status": "ok",
+                  "timestamp": "2026-03-15T10:00:00Z"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service is not ready",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                },
+                "example": {
+                  "type": "https://api.ticketlens.com/problems/search-service-error",
+                  "title": "Service Unavailable",
+                  "status": 503,
+                  "detail": "Search dependencies are not ready",
+                  "request_id": "6d4a6b0d-4b4e-42d8-8c0d-5f9bc1ea7f2a",
+                  "code": "SEARCH_SERVICE_ERROR",
+                  "meta": {
+                    "http_status": 503
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/health": {
+      "get": {
+        "tags": [
+          "Health"
+        ],
+        "summary": "Diagnostic health",
+        "description": "Return richer service health information for configuration and search connectivity.",
+        "operationId": "health_v1_health_get",
+        "responses": {
+          "200": {
+            "description": "Diagnostic health response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiagnosticHealthAPIResponse"
+                },
+                "example": {
+                  "request_id": "6d4a6b0d-4b4e-42d8-8c0d-5f9bc1ea7f2a",
+                  "status": "degraded",
+                  "timestamp": "2026-03-15T10:00:00Z",
+                  "components": {
+                    "config": {
+                      "status": "ok"
+                    },
+                    "search": {
+                      "status": "down"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "APIDatesFilter": {
+        "properties": {
+          "from_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "From Date"
+          },
+          "to_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "To Date"
+          },
+          "flexible_days": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 30.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Flexible Days"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "APIDatesFilter"
+      },
+      "APIDestinationFilter": {
+        "properties": {
+          "city": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "City"
+          },
+          "country": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Country"
+          },
+          "region": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Region"
+          },
+          "lat": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 90.0,
+                "minimum": -90.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lat"
+          },
+          "lon": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 180.0,
+                "minimum": -180.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lon"
+          },
+          "radius_km": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 1000.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Radius Km"
+          },
+          "destination_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Destination Id"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "APIDestinationFilter"
+      },
+      "APIIntRangeFilter": {
+        "properties": {
+          "min": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Min"
+          },
+          "max": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "APIIntRangeFilter"
+      },
+      "APIPoiFilter": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Id"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "match_mode": {
+            "type": "string",
+            "enum": [
+              "exact",
+              "fuzzy",
+              "contains"
+            ],
+            "title": "Match Mode",
+            "default": "fuzzy"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "APIPoiFilter"
+      },
+      "APIRangeFilter": {
+        "properties": {
+          "min": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Min"
+          },
+          "max": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "APIRangeFilter"
+      },
+      "AvailabilityWindowAPI": {
+        "properties": {
+          "from": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "From"
+          },
+          "to": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "To"
+          }
+        },
+        "type": "object",
+        "title": "AvailabilityWindowAPI"
+      },
+      "DiagnosticHealthAPIResponse": {
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "title": "Request Id"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "degraded",
+              "down"
+            ],
+            "title": "Status"
+          },
+          "timestamp": {
+            "type": "string",
+            "title": "Timestamp"
+          },
+          "components": {
+            "$ref": "#/components/schemas/DiagnosticHealthComponentsAPI"
+          }
+        },
+        "type": "object",
+        "required": [
+          "request_id",
+          "status",
+          "timestamp",
+          "components"
+        ],
+        "title": "DiagnosticHealthAPIResponse"
+      },
+      "DiagnosticHealthComponentsAPI": {
+        "properties": {
+          "config": {
+            "$ref": "#/components/schemas/HealthComponentAPI"
+          },
+          "search": {
+            "$ref": "#/components/schemas/HealthComponentAPI"
+          }
+        },
+        "type": "object",
+        "required": [
+          "config",
+          "search"
+        ],
+        "title": "DiagnosticHealthComponentsAPI"
+      },
+      "FacetBucketAPI": {
+        "properties": {
+          "value": {
+            "type": "string",
+            "title": "Value"
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "value",
+          "count"
+        ],
+        "title": "FacetBucketAPI"
+      },
+      "GetPOIAPIResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "aliases": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Aliases"
+          },
+          "city": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "City"
+          },
+          "country": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Country"
+          },
+          "destination_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Destination Id"
+          },
+          "distance_km": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Distance Km"
+          },
+          "score": {
+            "type": "number",
+            "title": "Score",
+            "default": 0.0
+          },
+          "confidence": {
+            "type": "string",
+            "enum": [
+              "high",
+              "medium",
+              "low"
+            ],
+            "title": "Confidence",
+            "default": "low"
+          },
+          "request_id": {
+            "type": "string",
+            "title": "Request Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "request_id"
+        ],
+        "title": "GetPOIAPIResponse"
+      },
+      "GetTourAPIResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "group_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Group Id"
+          },
+          "provider_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider Id"
+          },
+          "price": {
+            "$ref": "#/components/schemas/TourPriceAPI"
+          },
+          "city": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "City"
+          },
+          "country": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Country"
+          },
+          "breadcrumb_destination": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Breadcrumb Destination"
+          },
+          "breadcrumb_poi": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Breadcrumb Poi"
+          },
+          "duration_minutes": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duration Minutes"
+          },
+          "rating": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rating"
+          },
+          "ratings_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ratings Count"
+          },
+          "first_available": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "First Available"
+          },
+          "second_available": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Second Available"
+          },
+          "availability_window": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AvailabilityWindowAPI"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url"
+          },
+          "distance_km": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Distance Km"
+          },
+          "image_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Image Id"
+          },
+          "details": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Details"
+          },
+          "request_id": {
+            "type": "string",
+            "title": "Request Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "request_id"
+        ],
+        "title": "GetTourAPIResponse"
+      },
+      "HealthComponentAPI": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "down",
+              "missing_env"
+            ],
+            "title": "Status"
+          },
+          "latency_ms": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latency Ms"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "title": "HealthComponentAPI"
+      },
+      "POIItemAPI": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "aliases": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Aliases"
+          },
+          "city": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "City"
+          },
+          "country": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Country"
+          },
+          "destination_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Destination Id"
+          },
+          "distance_km": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Distance Km"
+          },
+          "score": {
+            "type": "number",
+            "title": "Score",
+            "default": 0.0
+          },
+          "confidence": {
+            "type": "string",
+            "enum": [
+              "high",
+              "medium",
+              "low"
+            ],
+            "title": "Confidence",
+            "default": "low"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "title": "POIItemAPI"
+      },
+      "PaginationAPI": {
+        "properties": {
+          "page": {
+            "type": "integer",
+            "title": "Page"
+          },
+          "per_page": {
+            "type": "integer",
+            "title": "Per Page"
+          },
+          "total_items": {
+            "type": "integer",
+            "title": "Total Items"
+          },
+          "total_pages": {
+            "type": "integer",
+            "title": "Total Pages"
+          },
+          "has_more": {
+            "type": "boolean",
+            "title": "Has More"
+          }
+        },
+        "type": "object",
+        "required": [
+          "page",
+          "per_page",
+          "total_items",
+          "total_pages",
+          "has_more"
+        ],
+        "title": "PaginationAPI"
+      },
+      "SearchPOIAPIRequest": {
+        "properties": {
+          "query": {
+            "type": "string",
+            "title": "Query"
+          },
+          "city": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "City"
+          },
+          "country": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Country"
+          },
+          "lat": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 90.0,
+                "minimum": -90.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lat"
+          },
+          "lon": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 180.0,
+                "minimum": -180.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lon"
+          },
+          "radius_km": {
+            "type": "integer",
+            "maximum": 200.0,
+            "minimum": 1.0,
+            "title": "Radius Km",
+            "default": 50
+          },
+          "limit": {
+            "type": "integer",
+            "maximum": 50.0,
+            "minimum": 1.0,
+            "title": "Limit",
+            "default": 10
+          },
+          "language": {
+            "type": "string",
+            "enum": [
+              "en",
+              "de",
+              "it"
+            ],
+            "title": "Language",
+            "default": "en"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "query"
+        ],
+        "title": "SearchPOIAPIRequest"
+      },
+      "SearchPOIAPIResponse": {
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "title": "Request Id"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/POIItemAPI"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "exact_match": {
+            "type": "boolean",
+            "title": "Exact Match"
+          },
+          "suggestions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Suggestions"
+          },
+          "did_you_mean": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Did You Mean"
+          }
+        },
+        "type": "object",
+        "required": [
+          "request_id",
+          "items",
+          "exact_match"
+        ],
+        "title": "SearchPOIAPIResponse"
+      },
+      "SearchToursAPIRequest": {
+        "properties": {
+          "query": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Query"
+          },
+          "poi": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/APIPoiFilter"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "city": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "City"
+          },
+          "destination": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/APIDestinationFilter"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "dates": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/APIDatesFilter"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "price": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/APIRangeFilter"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "duration_minutes": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/APIIntRangeFilter"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "group_size": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Group Size"
+          },
+          "languages": {
+            "items": {
+              "type": "string",
+              "enum": [
+                "en",
+                "de",
+                "it"
+              ]
+            },
+            "type": "array",
+            "title": "Languages"
+          },
+          "categories": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Categories"
+          },
+          "include_private": {
+            "type": "boolean",
+            "title": "Include Private",
+            "default": false
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "relevance",
+              "price_asc",
+              "price_desc",
+              "rating_desc",
+              "duration_asc",
+              "duration_desc"
+            ],
+            "title": "Sort",
+            "default": "relevance"
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Page",
+            "default": 0
+          },
+          "per_page": {
+            "type": "integer",
+            "maximum": 50.0,
+            "minimum": 1.0,
+            "title": "Per Page",
+            "default": 20
+          },
+          "include_facets": {
+            "type": "boolean",
+            "title": "Include Facets",
+            "default": false
+          },
+          "fields": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Fields"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "SearchToursAPIRequest"
+      },
+      "SearchToursAPIResponse": {
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "title": "Request Id"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/TourSummaryAPI"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/PaginationAPI"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings"
+          },
+          "facets": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TourFacetsAPI"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "request_id",
+          "items",
+          "pagination"
+        ],
+        "title": "SearchToursAPIResponse"
+      },
+      "StatusAPIResponse": {
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "title": "Request Id"
+          },
+          "status": {
+            "type": "string",
+            "const": "ok",
+            "title": "Status"
+          },
+          "timestamp": {
+            "type": "string",
+            "title": "Timestamp"
+          }
+        },
+        "type": "object",
+        "required": [
+          "request_id",
+          "status",
+          "timestamp"
+        ],
+        "title": "StatusAPIResponse"
+      },
+      "TourFacetsAPI": {
+        "properties": {
+          "city": {
+            "items": {
+              "$ref": "#/components/schemas/FacetBucketAPI"
+            },
+            "type": "array",
+            "title": "City"
+          },
+          "country": {
+            "items": {
+              "$ref": "#/components/schemas/FacetBucketAPI"
+            },
+            "type": "array",
+            "title": "Country"
+          },
+          "category": {
+            "items": {
+              "$ref": "#/components/schemas/FacetBucketAPI"
+            },
+            "type": "array",
+            "title": "Category"
+          },
+          "duration_bucket": {
+            "items": {
+              "$ref": "#/components/schemas/FacetBucketAPI"
+            },
+            "type": "array",
+            "title": "Duration Bucket"
+          },
+          "provider": {
+            "items": {
+              "$ref": "#/components/schemas/FacetBucketAPI"
+            },
+            "type": "array",
+            "title": "Provider"
+          }
+        },
+        "type": "object",
+        "title": "TourFacetsAPI"
+      },
+      "TourPriceAPI": {
+        "properties": {
+          "eur": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Eur"
+          },
+          "usd": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Usd"
+          },
+          "gbp": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Gbp"
+          },
+          "chf": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Chf"
+          }
+        },
+        "type": "object",
+        "title": "TourPriceAPI"
+      },
+      "TourSummaryAPI": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "group_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Group Id"
+          },
+          "provider_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider Id"
+          },
+          "price": {
+            "$ref": "#/components/schemas/TourPriceAPI"
+          },
+          "city": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "City"
+          },
+          "country": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Country"
+          },
+          "breadcrumb_destination": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Breadcrumb Destination"
+          },
+          "breadcrumb_poi": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Breadcrumb Poi"
+          },
+          "duration_minutes": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duration Minutes"
+          },
+          "rating": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rating"
+          },
+          "ratings_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ratings Count"
+          },
+          "first_available": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "First Available"
+          },
+          "second_available": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Second Available"
+          },
+          "availability_window": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AvailabilityWindowAPI"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url"
+          },
+          "distance_km": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Distance Km"
+          },
+          "image_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Image Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "title"
+        ],
+        "title": "TourSummaryAPI"
+      }
+    }
+  }
+}
