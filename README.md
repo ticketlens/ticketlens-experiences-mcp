@@ -12,7 +12,7 @@ TicketLens provides a public MCP server at `https://mcp.ticketlens.com/` and a v
 
 ## What the current API/MCP returns
 
-The current public contract keeps legacy `tour` naming in tool and endpoint names, but the returned inventory is broader than guided tours.
+The public `tour`-named tools and endpoints return a broader destination-experiences catalog, not just guided tours.
 
 `search_tours` and `POST /v1/search/tours` can return:
 
@@ -146,14 +146,14 @@ Date filtering notes:
 | --- | --- |
 | `search_tours` | Search destination experiences across tours, attraction tickets, hop-on hop-off buses, sports tickets, event tickets, and other activities. |
 | `search_pois` | Resolve POIs and aliases before calling `search_tours`. |
-| `get_tour` | Fetch detail for an experience returned by `search_tours`. The legacy `tour` name is retained in the public contract. |
+| `get_tour` | Fetch detail for an experience returned by `search_tours`. |
 | `health_check` | Return dependency-aware service health. |
 
 ## API endpoint reference
 
 | Method | Path | Purpose |
 | --- | --- | --- |
-| `POST` | `/v1/search/tours` | Search destination experiences with the legacy `tour`-named endpoint. |
+| `POST` | `/v1/search/tours` | Search destination experiences, including tours, attraction tickets, hop-on hop-off buses, sports tickets, event tickets, and other activities. |
 | `GET` | `/v1/tours/{tour_id}` | Fetch detail for an experience returned by `/v1/search/tours`. |
 | `POST` | `/v1/search/pois` | Resolve points of interest before filtering search. |
 | `GET` | `/v1/pois/{poi_id}` | Fetch a canonical POI record by ID. |
@@ -185,7 +185,7 @@ General API client examples:
 
 ### Why is the endpoint called tours if it returns tickets too?
 
-The current public contract uses legacy `tour` naming in tool and endpoint names. The underlying TicketLens catalog spans destination experiences more broadly, so `search_tours` and `POST /v1/search/tours` can return guided tours, attraction tickets, hop-on hop-off buses, sports tickets, event tickets, and other bookable activities.
+The public `tour`-named tools and endpoints cover destination experiences more broadly, so `search_tours` and `POST /v1/search/tours` can return guided tours, attraction tickets, hop-on hop-off buses, sports tickets, event tickets, and other bookable activities.
 
 ## Access, limits, and support
 

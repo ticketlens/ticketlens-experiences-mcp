@@ -18,7 +18,7 @@
           "Tours"
         ],
         "summary": "Search experiences",
-        "description": "Search TicketLens destination experiences via the legacy /v1/search/tours contract. Results may include guided tours, attraction tickets, hop-on hop-off buses, sports tickets, event tickets, and other activities.",
+        "description": "Search TicketLens destination experiences via /v1/search/tours. Results may include guided tours, attraction tickets, hop-on hop-off buses, sports tickets, event tickets, and other activities.",
         "operationId": "search_tours_v1_search_tours_post",
         "requestBody": {
           "content": {
@@ -281,7 +281,7 @@
           "Tours"
         ],
         "summary": "Get an experience",
-        "description": "Fetch the canonical TicketLens record for an experience returned by search_tours. The public contract keeps legacy /v1/tours/{tour_id} naming even when the record is a ticketed attraction or event product.",
+        "description": "Fetch the canonical TicketLens record for an experience returned by search_tours. Records can include guided tours, attraction tickets, hop-on hop-off buses, sports tickets, event tickets, and other activities.",
         "operationId": "get_tour_v1_tours__tour_id__get",
         "parameters": [
           {
@@ -532,7 +532,7 @@
           "POIs"
         ],
         "summary": "Search POIs",
-        "description": "Resolve points of interest before calling the legacy /v1/search/tours experience search endpoint.",
+        "description": "Resolve points of interest before calling the /v1/search/tours experience search endpoint.",
         "operationId": "search_pois_v1_search_pois_post",
         "requestBody": {
           "content": {
