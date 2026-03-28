@@ -1,16 +1,23 @@
 # TicketLens Experiences MCP
 
-Hosted MCP and REST API for discovering tours, tickets, attractions, and activities with TicketLens.
+Official remote MCP server and REST API for discovering tours, tickets, attractions, and activities with TicketLens.
 
-TicketLens provides a public MCP server at `https://mcp.ticketlens.com/` and a versioned REST API at `https://api.ticketlens.com/v1` for in-destination experiences, including guided tours, attraction tickets, hop-on hop-off buses, sports tickets, and other event tickets.
+TicketLens provides a public hosted remote MCP server at `https://mcp.ticketlens.com/` and a versioned REST API at `https://api.ticketlens.com/v1` for AI travel planners, destination discovery flows, and custom integrations. The same hosted inventory covers guided tours, attraction tickets, hop-on hop-off buses, sports tickets, and other event tickets.
 
 Main website: [www.ticketlens.com/en](https://www.ticketlens.com/en)
 
 ## What TicketLens is
 
+- The official TicketLens remote MCP + REST surface for destination experiences.
 - A developer-facing search surface for destination experiences.
 - Available as both MCP and REST on the same hosted inventory.
 - Designed for AI assistants, travel planning tools, destination discovery flows, and custom integrations.
+
+## Why it fits AI agents
+
+- Hosted remote MCP server with a public URL for quick connector setup and evaluation.
+- Public REST fallback on the same inventory for clients that are not using MCP yet.
+- Broad destination-experiences coverage across tours, attraction tickets, hop-on hop-off buses, sports tickets, and events.
 
 ## What the current API/MCP returns
 
