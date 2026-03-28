@@ -70,6 +70,12 @@ Add the hosted MCP URL to your Cursor MCP config. A ready-to-copy example is in 
 
 Claude remote MCP connectors are added from the UI, not through `claude_desktop_config.json`. Use the hosted URL `https://mcp.ticketlens.com/` in `Settings > Connectors`, or follow the short guide in [examples/mcp/claude-connector.md](examples/mcp/claude-connector.md).
 
+### OpenClaw
+
+OpenClaw users can integrate TicketLens quickly by adding a workspace skill that calls the public TicketLens REST API. Start from [examples/openclaw/skills/ticketlens-api/SKILL.md](examples/openclaw/skills/ticketlens-api/SKILL.md).
+
+See [examples/openclaw/README.md](examples/openclaw/README.md) for the recommended API path and notes about the more advanced MCP route.
+
 ## Hosted API quickstart
 
 Hosted API URLs:
