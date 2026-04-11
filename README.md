@@ -162,7 +162,7 @@ Date filtering notes:
 | `search_tours` | Search destination experiences across tours, attraction tickets, hop-on hop-off buses, sports tickets, event tickets, and other activities. |
 | `search_pois` | Resolve POIs and aliases before calling `search_tours`. |
 | `get_tour` | Fetch detail for an experience returned by `search_tours`. |
-| `health_check` | Return dependency-aware service health. |
+| `health_check` | Return a passive service health snapshot. |
 
 ## API endpoint reference
 
@@ -173,8 +173,8 @@ Date filtering notes:
 | `POST` | `/v1/search/pois` | Resolve points of interest before filtering search. |
 | `GET` | `/v1/pois/{poi_id}` | Fetch a canonical POI record by ID. |
 | `GET` | `/v1/livez` | Process liveness check. |
-| `GET` | `/v1/readyz` | Readiness check for infra and search dependencies. |
-| `GET` | `/v1/health` | Richer human-facing diagnostic health. |
+| `GET` | `/v1/readyz` | Local readiness check for required configuration and service initialization. |
+| `GET` | `/v1/health` | Richer human-facing diagnostic health using recent search backend activity. |
 
 ## Examples by experience type
 

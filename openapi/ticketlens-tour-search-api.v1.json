@@ -18,7 +18,7 @@
           "Tours"
         ],
         "summary": "Search experiences",
-        "description": "Search TicketLens destination experiences via /v1/search/tours. Results may include guided tours, attraction tickets, hop-on hop-off buses, sports tickets, event tickets, and other activities.",
+        "description": "Search TicketLens destination experiences. Results may include guided tours, attraction tickets, hop-on hop-off buses, sports tickets, event tickets, and other activities.",
         "operationId": "search_tours_v1_search_tours_post",
         "requestBody": {
           "content": {
@@ -126,6 +126,11 @@
                     }
                   ]
                 }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                }
               }
             }
           },
@@ -143,6 +148,11 @@
                   "detail": "Request is unauthorized",
                   "request_id": "...",
                   "code": "UNAUTHORIZED"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
                 }
               }
             }
@@ -167,6 +177,11 @@
                       "7"
                     ]
                   }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
                 }
               }
             }
@@ -194,6 +209,11 @@
                     "retry_after_seconds": 3600
                   }
                 }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                }
               }
             }
           },
@@ -211,6 +231,11 @@
                   "detail": "Unexpected internal failure",
                   "request_id": "...",
                   "code": "INTERNAL"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
                 }
               }
             }
@@ -233,6 +258,11 @@
                     "http_status": 400
                   }
                 }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                }
               }
             }
           },
@@ -250,6 +280,11 @@
                   "detail": "Search service timed out",
                   "request_id": "...",
                   "code": "SEARCH_TIMEOUT"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
                 }
               }
             }
@@ -269,6 +304,11 @@
                   "request_id": "...",
                   "code": "POI_RESOLUTION_REQUIRED"
                 }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                }
               }
             }
           }
@@ -281,7 +321,7 @@
           "Tours"
         ],
         "summary": "Get an experience",
-        "description": "Fetch the canonical TicketLens record for an experience returned by search_tours. Records can include guided tours, attraction tickets, hop-on hop-off buses, sports tickets, event tickets, and other activities.",
+        "description": "Fetch the canonical TicketLens record for an experience returned by search_tours. The /v1/tours/{tour_id} resource may represent a guided tour, attraction ticket, event product, or similar experience.",
         "operationId": "get_tour_v1_tours__tour_id__get",
         "parameters": [
           {
@@ -374,6 +414,11 @@
                     }
                   ]
                 }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                }
               }
             }
           },
@@ -391,6 +436,11 @@
                   "detail": "Request is unauthorized",
                   "request_id": "...",
                   "code": "UNAUTHORIZED"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
                 }
               }
             }
@@ -415,6 +465,11 @@
                       "7"
                     ]
                   }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
                 }
               }
             }
@@ -442,6 +497,11 @@
                     "retry_after_seconds": 3600
                   }
                 }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                }
               }
             }
           },
@@ -459,6 +519,11 @@
                   "detail": "Unexpected internal failure",
                   "request_id": "...",
                   "code": "INTERNAL"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
                 }
               }
             }
@@ -481,6 +546,11 @@
                     "http_status": 400
                   }
                 }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                }
               }
             }
           },
@@ -498,6 +568,11 @@
                   "detail": "Search service timed out",
                   "request_id": "...",
                   "code": "SEARCH_TIMEOUT"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
                 }
               }
             }
@@ -520,6 +595,11 @@
                     "tour_id": "258736"
                   }
                 }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                }
               }
             }
           }
@@ -532,7 +612,7 @@
           "POIs"
         ],
         "summary": "Search POIs",
-        "description": "Resolve points of interest before calling the /v1/search/tours experience search endpoint.",
+        "description": "Resolve points of interest before calling the experience search endpoint.",
         "operationId": "search_pois_v1_search_pois_post",
         "requestBody": {
           "content": {
@@ -604,6 +684,11 @@
                     }
                   ]
                 }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                }
               }
             }
           },
@@ -621,6 +706,11 @@
                   "detail": "Request is unauthorized",
                   "request_id": "...",
                   "code": "UNAUTHORIZED"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
                 }
               }
             }
@@ -645,6 +735,11 @@
                       "7"
                     ]
                   }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
                 }
               }
             }
@@ -672,6 +767,11 @@
                     "retry_after_seconds": 3600
                   }
                 }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                }
               }
             }
           },
@@ -689,6 +789,11 @@
                   "detail": "Unexpected internal failure",
                   "request_id": "...",
                   "code": "INTERNAL"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
                 }
               }
             }
@@ -711,6 +816,11 @@
                     "http_status": 400
                   }
                 }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                }
               }
             }
           },
@@ -728,6 +838,11 @@
                   "detail": "Search service timed out",
                   "request_id": "...",
                   "code": "SEARCH_TIMEOUT"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
                 }
               }
             }
@@ -818,6 +933,11 @@
                     }
                   ]
                 }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                }
               }
             }
           },
@@ -835,6 +955,11 @@
                   "detail": "Request is unauthorized",
                   "request_id": "...",
                   "code": "UNAUTHORIZED"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
                 }
               }
             }
@@ -859,6 +984,11 @@
                       "7"
                     ]
                   }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
                 }
               }
             }
@@ -886,6 +1016,11 @@
                     "retry_after_seconds": 3600
                   }
                 }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                }
               }
             }
           },
@@ -903,6 +1038,11 @@
                   "detail": "Unexpected internal failure",
                   "request_id": "...",
                   "code": "INTERNAL"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
                 }
               }
             }
@@ -925,6 +1065,11 @@
                     "http_status": 400
                   }
                 }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
+                }
               }
             }
           },
@@ -942,6 +1087,11 @@
                   "detail": "Search service timed out",
                   "request_id": "...",
                   "code": "SEARCH_TIMEOUT"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
                 }
               }
             }
@@ -963,6 +1113,11 @@
                   "meta": {
                     "tour_id": "258736"
                   }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
                 }
               }
             }
@@ -1003,7 +1158,7 @@
           "Health"
         ],
         "summary": "Readiness check",
-        "description": "Return success when configuration is present and Algolia is reachable.",
+        "description": "Return success when required configuration is present and the service is ready to accept requests.",
         "operationId": "readyz_v1_readyz_get",
         "responses": {
           "200": {
@@ -1029,15 +1184,17 @@
                   "$ref": "#/components/schemas/APIProblemDetails"
                 },
                 "example": {
-                  "type": "https://api.ticketlens.com/problems/search-service-error",
+                  "type": "https://api.ticketlens.com/problems/internal",
                   "title": "Service Unavailable",
                   "status": 503,
                   "detail": "Search dependencies are not ready",
                   "request_id": "6d4a6b0d-4b4e-42d8-8c0d-5f9bc1ea7f2a",
-                  "code": "SEARCH_SERVICE_ERROR",
-                  "meta": {
-                    "http_status": 503
-                  }
+                  "code": "INTERNAL"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIProblemDetails"
                 }
               }
             }
@@ -1051,7 +1208,7 @@
           "Health"
         ],
         "summary": "Diagnostic health",
-        "description": "Return richer service health information for configuration and search connectivity.",
+        "description": "Return richer service health information for configuration and recent search backend activity.",
         "operationId": "health_v1_health_get",
         "responses": {
           "200": {
@@ -1070,7 +1227,7 @@
                       "status": "ok"
                     },
                     "search": {
-                      "status": "down"
+                      "status": "unknown"
                     }
                   }
                 }
@@ -1285,6 +1442,76 @@
         "type": "object",
         "title": "APIPoiFilter"
       },
+      "APIProblemDetails": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "title": "Type"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "status": {
+            "type": "integer",
+            "title": "Status"
+          },
+          "detail": {
+            "type": "string",
+            "title": "Detail"
+          },
+          "request_id": {
+            "type": "string",
+            "title": "Request Id"
+          },
+          "code": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ErrorCode"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "errors": {
+            "anyOf": [
+              {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Errors"
+          },
+          "meta": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta"
+          }
+        },
+        "type": "object",
+        "required": [
+          "type",
+          "title",
+          "status",
+          "detail",
+          "request_id"
+        ],
+        "title": "APIProblemDetails"
+      },
       "APIRangeFilter": {
         "properties": {
           "min": {
@@ -1389,6 +1616,21 @@
           "search"
         ],
         "title": "DiagnosticHealthComponentsAPI"
+      },
+      "ErrorCode": {
+        "type": "string",
+        "enum": [
+          "INVALID_ARGUMENT",
+          "INVALID_FILTER",
+          "UNSUPPORTED_FILTER",
+          "POI_RESOLUTION_REQUIRED",
+          "RATE_LIMIT_EXCEEDED",
+          "SEARCH_TIMEOUT",
+          "SEARCH_SERVICE_ERROR",
+          "UNAUTHORIZED",
+          "INTERNAL"
+        ],
+        "title": "ErrorCode"
       },
       "FacetBucketAPI": {
         "properties": {
@@ -1699,7 +1941,8 @@
             "enum": [
               "ok",
               "down",
-              "missing_env"
+              "missing_env",
+              "unknown"
             ],
             "title": "Status"
           },
@@ -1713,6 +1956,17 @@
               }
             ],
             "title": "Latency Ms"
+          },
+          "checked_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Checked At"
           }
         },
         "type": "object",
