@@ -37,6 +37,7 @@ Current public MCP tools:
 - `search_pois`
 - `get_tour`
 - `health_check`
+- `submit_feedback`
 
 Current public REST endpoints:
 
@@ -163,6 +164,68 @@ Date filtering notes:
 | `search_pois` | Resolve POIs and aliases before calling `search_tours`. |
 | `get_tour` | Fetch detail for an experience returned by `search_tours`. |
 | `health_check` | Return a passive service health snapshot. |
+| `submit_feedback` | Share structured MCP feedback when behavior is broken, unclear, missing capabilities, or worth improving. |
+
+## MCP feedback
+
+`submit_feedback` is available on the hosted MCP server only. It is not part of the public REST API or the OpenAPI document.
+
+Use `submit_feedback` when an agent encounters:
+
+- broken behavior
+- confusing or incomplete results
+- missing capabilities
+- documentation gaps
+- clear product or tool improvements
+
+Supported fields:
+
+- required: `category`, `message`
+- optional: `suggestion`, `related_tool_name`, `related_request_id`, `expected_behavior`, `actual_behavior`, `reproduction_summary`
+
+Supported categories:
+
+- `bug_report`
+- `improvement`
+- `missing_capability`
+- `documentation_gap`
+- `other`
+
+Example improvement suggestion:
+
+```json
+{
+  "category": "improvement",
+  "message": "Add clearer filter explanations when date constraints remove all results.",
+  "related_tool_name": "search_tours",
+  "suggestion": "Return a short hint explaining which filter removed the result set."
+}
+```
+
+Example documentation-gap report:
+
+```json
+{
+  "category": "documentation_gap",
+  "message": "The MCP docs should explain when search_pois is recommended before search_tours.",
+  "related_tool_name": "search_pois",
+  "suggestion": "Add a short POI-first workflow example to the MCP quickstart."
+}
+```
+
+Example bug report payload:
+
+```json
+{
+  "category": "bug_report",
+  "message": "The tool rejected a valid POI filter after resolving the POI successfully.",
+  "related_tool_name": "search_tours",
+  "related_request_id": "req-123",
+  "expected_behavior": "The search should accept the resolved POI and return matching experiences.",
+  "actual_behavior": "The tool returned an invalid argument error.",
+  "reproduction_summary": "Resolve a POI with search_pois, then pass the returned POI id into search_tours."
+}
+```
 
 ## API endpoint reference
 
@@ -206,6 +269,7 @@ The public `tour`-named tools and endpoints cover destination experiences more b
 
 - The hosted MCP and API are public and intended for developer evaluation and integration.
 - Fair-use and abuse-protection limits may apply.
+- MCP clients can use `submit_feedback` for runtime issues, confusing behavior, missing capabilities, and improvement suggestions.
 - Open a GitHub issue for broken examples, stale docs, or integration gaps.
 
 ## Maintenance
