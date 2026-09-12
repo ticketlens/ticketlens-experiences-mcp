@@ -1,0 +1,9 @@
+{
+  "name": "get_poi",
+  "arguments": {
+    "payload": {
+      "poi_id": "660851",
+      "language": "en"
+    }
+  }
+}
