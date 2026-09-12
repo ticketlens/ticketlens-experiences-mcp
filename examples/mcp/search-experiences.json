@@ -1,0 +1,15 @@
+{
+  "name": "search_experiences",
+  "arguments": {
+    "payload": {
+      "query": "museum tickets",
+      "destination": {
+        "city": "Paris",
+        "country": "France"
+      },
+      "language": "en",
+      "currency": "EUR",
+      "page_size": 5
+    }
+  }
+}

@@ -31,13 +31,17 @@ The public `tour`-named tools and endpoints return a broader destination-experie
 - sports tickets
 - event and admission products
 
-Current public MCP tools:
+Current public MCP tools (contract **2.2.0**):
 
+- `search_experiences` — preferred search tool for new integrations
+- `get_poi`
 - `search_tours`
 - `search_pois`
 - `get_tour`
 - `health_check`
 - `submit_feedback`
+
+Read the `ticketlens://capabilities` MCP resource for the current contract version, supported filters, limits, and examples. `tools/list` publishes tool input schemas and available output schemas. Existing tools remain available; `search_tours` is a compatibility adapter with no scheduled removal date.
 
 Current public REST endpoints:
 
@@ -59,6 +63,36 @@ Hosted MCP URLs:
 - Base URL: `https://mcp.ticketlens.com/`
 - Canonical server card: `https://mcp.ticketlens.com/.well-known/mcp/server-card.json`
 - Compatibility alias: `https://mcp.ticketlens.com/.well-known/mcp.json`
+
+### First MCP search
+
+After connecting with an MCP client, inspect `tools/list`, read `ticketlens://capabilities` with `resources/read`, and use `search_experiences` for new searches. Search, POI, detail, and feedback inputs belong inside `arguments.payload`; `health_check` takes no arguments.
+
+This object is the `params` value for an MCP `tools/call` request:
+
+```json
+{
+  "name": "search_experiences",
+  "arguments": {
+    "payload": {
+      "query": "museum tickets",
+      "destination": {"city": "Paris", "country": "France"},
+      "language": "en",
+      "currency": "EUR",
+      "page_size": 5
+    }
+  }
+}
+```
+
+Handle the returned `status`: `ok`, `needs_disambiguation`, `no_results`, or `error`. For ambiguous places, use the selected candidate's supplied retry. For a result with `selection_ref`, pass it unchanged with that result's `id` to `get_tour` to retrieve the same selected price and date context.
+
+Price and rating sorting apply **within each returned page**. Counts describe matching catalog records, so they are not a count of unique experiences across the entire search. Availability and prices must still be confirmed when booking.
+
+See the [MCP contract guide](docs/mcp-contract.md) for filters, price selection, pagination recovery, error handling, and compatibility. Copyable `tools/call` parameter examples:
+
+- [Search experiences](examples/mcp/search-experiences.json)
+- [Look up a POI](examples/mcp/get-poi.json)
 
 ### Codex
 
@@ -160,11 +194,15 @@ Date filtering notes:
 
 | Tool | What it does |
 | --- | --- |
-| `search_tours` | Search destination experiences across tours, attraction tickets, hop-on hop-off buses, sports tickets, event tickets, and other activities. |
-| `search_pois` | Resolve POIs and aliases before calling `search_tours`. |
-| `get_tour` | Fetch detail for an experience returned by `search_tours`. |
+| `search_experiences` | Preferred typed search with effective filters, compact results, place disambiguation, and recovery suggestions. |
+| `get_poi` | Fetch a canonical POI by `poi_id` and content language. |
+| `search_tours` | Compatibility search for existing integrations, with its existing request and response shape. |
+| `search_pois` | Resolve landmark names and aliases to POI IDs. |
+| `get_tour` | Fetch experience detail by `tour_id`; pass a search result's `selection_ref` to preserve its selected price and dates. |
 | `health_check` | Return a passive service health snapshot. |
 | `submit_feedback` | Share structured MCP feedback when behavior is broken, unclear, missing capabilities, or worth improving. |
+
+The `ticketlens://capabilities` resource describes the MCP contract. MCP tool names and fields are separate from REST endpoints and their [OpenAPI document](https://api.ticketlens.com/v1/openapi.json).
 
 ## MCP feedback
 
@@ -190,6 +228,8 @@ Supported categories:
 - `missing_capability`
 - `documentation_gap`
 - `other`
+
+The examples below are payload objects. Invoke them with `{"name":"submit_feedback","arguments":{"payload":{...}}}` as the `tools/call` parameters.
 
 Example improvement suggestion:
 
@@ -269,6 +309,7 @@ The public `tour`-named tools and endpoints cover destination experiences more b
 
 - The hosted MCP and API are public and intended for developer evaluation and integration.
 - Fair-use and abuse-protection limits may apply.
+- MCP clients must inspect tool errors even when the HTTP response is 200. Respect returned retry timing; a non-retryable service configuration error requires operator action. See [error handling and usage limits](docs/mcp-contract.md#error-handling-and-usage-limits).
 - MCP clients can use `submit_feedback` for runtime issues, confusing behavior, missing capabilities, and improvement suggestions.
 - Open a GitHub issue for broken examples, stale docs, or integration gaps.
 
